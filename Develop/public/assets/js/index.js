@@ -3,6 +3,7 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
+const {notes} = require('../../../db/db.json');
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -23,23 +24,64 @@ const hide = (elem) => {
 };
 
 // activeNote is used to keep track of the note in the textarea
-let activeNote = {};
+let activeNote = {notes};
+
+// function createNewNote(body, note) {
+//   const notes = body;
+//   notes.push(note);
+//   fs.writeFileSync(
+//     path.join(__dirname, "../../../Develop/db/db"),
+//     JSON.stringify({ note}, null, 2)
+//   );
+//   return notes;
+// }
+
+const printResults = resultArr => {
+  console.log(resultArr);
+
+  const animalHTML = resultArr.map(({ id, title, text }) => {
+    return `
+  <div class="col-12 col-md-5 mb-3">
+    <div class="card p-3" data-id=${id}>
+      <h4 class="text-primary">${title}</h4>
+      <p>Species: ${title.substring(0, 1).toUpperCase()}<br/>
+      Diet: ${text.substring(0, 1).toUpperCase() + title.substring(1)}<br/>
+      Personality Traits: </p>
+    </div>
+  </div>
+    `;
+  });
+
+  noteList.innerHTML = animalHTML.join('');
+};
 
 const getNotes = () =>
+console.log("================== THIS IS FIRING. ===================");
   fetch('/api/notes', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify()
   });
 
-const saveNote = (note) =>
+const saveNote = () =>
   fetch('/api/notes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(note),
+    body: JSON.stringify(activeNote),
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    alert('Error: ' + response.statusText);
+  })
+  .then(postResponse => {
+    console.log(postResponse);
+    alert('Thank you for adding an animal!');
   });
 
 const deleteNote = (id) =>
@@ -117,7 +159,7 @@ const handleRenderSaveBtn = () => {
 };
 
 // Render the list of note titles
-const renderNoteList = async (notes) => {
+const renderNoteList = async () => {
   let jsonNotes = await notes.json();
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
@@ -165,13 +207,13 @@ const renderNoteList = async (notes) => {
     noteListItems.push(li);
   });
 
-  if (window.location.pathname === '/notes') {
+  if (window.location.pathname === '/') {
     noteListItems.forEach((note) => noteList[0].append(note));
   }
 };
 
 // Gets notes from the db and renders them to the sidebar
-const getAndRenderNotes = () => getNotes().then(renderNoteList);
+const getAndRenderNotes = (notes) => getNotes(notes).then(renderNoteList);
 
 if (window.location.pathname === '/notes') {
   saveNoteBtn.addEventListener('click', handleNoteSave);
@@ -181,3 +223,4 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
+getNotes();

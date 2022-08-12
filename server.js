@@ -1,14 +1,9 @@
 const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
-const {notes} = require('./Develop/db/db.json');
-const htmlRoutes = require('./routes/htmlRoutes');
-
-app.get('/api/notes', (req, res) => {
-let results = notes;
-console.log(req.query)
-    res.json(results);
-});
+// const {notes} = require('./Develop/db/db.json');
+ const htmlRoutes = require('./routes/htmlRoutes');
+ const apiRoutes = require('./routes/apiRoutes');
 
 app.use(express.urlencoded(
     {extended: true}));
@@ -18,17 +13,16 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // app.use('/api', apiRoutes);
-app.use('/', htmlRoutes);
+ app.use('/api', apiRoutes);
+ app.use('/', htmlRoutes);
 
-// function createNewNote(body, notes) {
-//     const notes = body;
-//     zookeepers.push(zookeeper);
-//     fs.writeFileSync(
-//       path.join(__dirname, "../data/zookeepers.json"),
-//       JSON.stringify({ zookeepers }, null, 2)
-//     );
-//     return zookeeper;
-//   }
+ /*
+app.post('/api/notes', (req, res) => {
+
+    // req.body is where our incoming content will be
+  console.log(req.body);
+  res.json(req.body);
+}); */
 
 
 app.listen(PORT, () => {
