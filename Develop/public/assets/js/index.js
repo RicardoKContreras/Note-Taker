@@ -3,7 +3,8 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
-const {notes} = require('../../../db/db.json');
+const notes = require('../../../db/notes.json');
+// console.log(window.location.pathname);
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -24,7 +25,7 @@ const hide = (elem) => {
 };
 
 // activeNote is used to keep track of the note in the textarea
-let activeNote = {notes};
+let activeNote = {};
 
 // function createNewNote(body, note) {
 //   const notes = body;
@@ -36,33 +37,39 @@ let activeNote = {notes};
 //   return notes;
 // }
 
-const printResults = resultArr => {
-  console.log(resultArr);
+// const printResults = resultArr => {
+//   console.log(resultArr);
 
-  const animalHTML = resultArr.map(({ id, title, text }) => {
-    return `
-  <div class="col-12 col-md-5 mb-3">
-    <div class="card p-3" data-id=${id}>
-      <h4 class="text-primary">${title}</h4>
-      <p>Species: ${title.substring(0, 1).toUpperCase()}<br/>
-      Diet: ${text.substring(0, 1).toUpperCase() + title.substring(1)}<br/>
-      Personality Traits: </p>
-    </div>
-  </div>
-    `;
-  });
+//   const animalHTML = resultArr.map(({ id, title, text }) => {
+//     return `
+//   <div class="col-12 col-md-5 mb-3">
+//     <div class="card p-3" data-id=${id}>
+//       <h4 class="text-primary">${title}</h4>
+//       <p>Species: ${title.substring(0, 1).toUpperCase()}<br/>
+//       Diet: ${text.substring(0, 1).toUpperCase() + title.substring(1)}<br/>
+//       Personality Traits: </p>
+//     </div>
+//   </div>
+//     `;
+//   });
 
-  noteList.innerHTML = animalHTML.join('');
-};
+//   noteList.innerHTML = animalHTML.join('');
+// };
 
 const getNotes = () =>
-console.log("================== THIS IS FIRING. ===================");
   fetch('/api/notes', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify()
+  }).then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    alert('Error: ' + response.statusText);
+  }).catch(error => {
+    console.log(error);
   });
 
 const saveNote = () =>
@@ -213,7 +220,7 @@ const renderNoteList = async () => {
 };
 
 // Gets notes from the db and renders them to the sidebar
-const getAndRenderNotes = (notes) => getNotes(notes).then(renderNoteList);
+const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
 if (window.location.pathname === '/notes') {
   saveNoteBtn.addEventListener('click', handleNoteSave);
@@ -222,5 +229,7 @@ if (window.location.pathname === '/notes') {
   noteText.addEventListener('keyup', handleRenderSaveBtn);
 }
 
+
+//printResults();
 getAndRenderNotes();
-getNotes();
+
