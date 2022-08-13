@@ -3,7 +3,7 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
-const notes = require('../../../db/notes.json');
+
 // console.log(window.location.pathname);
 
 if (window.location.pathname === '/notes') {
@@ -62,23 +62,15 @@ const getNotes = () =>
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify()
-  }).then(response => {
-    if (response.ok) {
-      return response.json();
-    }
-    alert('Error: ' + response.statusText);
-  }).catch(error => {
-    console.log(error);
-  });
+  })
 
-const saveNote = () =>
+const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(activeNote),
+    body: JSON.stringify(note),
   })
   .then(response => {
     if (response.ok) {
@@ -88,7 +80,7 @@ const saveNote = () =>
   })
   .then(postResponse => {
     console.log(postResponse);
-    alert('Thank you for adding an animal!');
+    alert('Thank you for adding a Note!');
   });
 
 const deleteNote = (id) =>
@@ -166,8 +158,10 @@ const handleRenderSaveBtn = () => {
 };
 
 // Render the list of note titles
-const renderNoteList = async () => {
+const renderNoteList = async (notes) => {
+
   let jsonNotes = await notes.json();
+  console.log(jsonNotes);
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
@@ -213,10 +207,10 @@ const renderNoteList = async () => {
 
     noteListItems.push(li);
   });
-
-  if (window.location.pathname === '/') {
+console.log(noteListItems);
+  if (window.location.pathname === '/notes') {
     noteListItems.forEach((note) => noteList[0].append(note));
-  }
+  } 
 };
 
 // Gets notes from the db and renders them to the sidebar

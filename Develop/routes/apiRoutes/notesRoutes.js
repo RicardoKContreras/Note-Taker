@@ -6,6 +6,7 @@ const {notes} = require('../../db/notes.json');
     
 router.get('/notes', (req,res) => {
     let results = notes;
+    console.log(results);
     if(req.query) {
      results = filterByQuery(req.query, results);
     }
@@ -30,12 +31,12 @@ router.get('/notes', (req,res) => {
 if(!validateNote(req.body)) {
     res.status(400).send('The note is not properly formatted.');
 } else{
-      //add animal to json file and animals array in this function
+      //add note to json file and notes array in this function
       const noter = createNewNote(req.body, notes);
 
       console.log(noter);
        res.json(req.body);
-      res.json(noter);
+    //   res.json(noter);
       
 }  
 });
