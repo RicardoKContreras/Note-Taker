@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { filterByQuery, findById, createNewNote, validateNote} = require('../../lib/notes');
-const {notes} = require('../../db/notes.json');
+const {notes} = require('../../db/db.json');
 
 
     
@@ -36,7 +36,7 @@ if(!validateNote(req.body)) {
 
       console.log(noter);
        res.json(req.body);
-    //   res.json(noter);
+    
       
 }  
 });
