@@ -3,32 +3,8 @@ const path = require('path');
 
 
 function filterByQuery(query, notesArray) {
-    // let personalityTraitsArray = [];
-    // Note that we save the animalsArray as filteredResults here:
      let filteredResults = notesArray;
-    // if(query.personalityTraits) {
-    //     //Save personalityTraits as a dedicated array.
-    //     //if personalityTraits is a string, place it into a new array and save.
-    //     if(typeof query.personalityTraits === 'string') {
-    //         personalityTraitsArray = [query.personalityTraits];
-    //     } else {
-    //         personalityTraitsArray = query.personalityTraits;
-    //     }
-
-    //     //Loop through each trait in the personalityTraits array:
-    //     personalityTraitsArray.forEach(trait => {
-    //     // Check the trait against each animal in the filteredResults array.
-    //   // Remember, it is initially a copy of the animalsArray,
-    //   // but here we're updating it for each trait in the .forEach() loop.
-    //   // For each trait being targeted by the filter, the filteredResults
-    //   // array will then contain only the entries that contain the trait,
-    //   // so at the end we'll have an array of animals that have every one 
-    //   // of the traits when the .forEach() loop is finished.
-    //   filteredResults = filteredResults.filter(
-    //     animal => animal.personalityTraits.indexOf(trait) !== -1
-    //   );
-    // });
-    // }
+    
 
     if(query.title){
         filteredResults = filteredResults.filter(notes => notes.title === query.title);
@@ -37,11 +13,6 @@ function filterByQuery(query, notesArray) {
     if(query.text) {
         filteredResults = filteredResults.filter(notes => notes.text === query.text);
     }
-
-    // if(query.name) {
-    //     filteredResults = filteredResults.filter(animal => animal.name === query.name);
-
-    // }
     return filteredResults;
 }
 
@@ -51,19 +22,15 @@ function findById(id, notesArray) {
 }
 
 function createNewNote(body, notesArray) {
-   
-    //Our function's main code will go here!
     const note = body;
     notesArray.push(note);
     fs.writeFileSync(
         path.join(__dirname, '../db/db.json'),
         JSON.stringify({notes: notesArray}, null, 2)
     );
-    //return finished code to post route for response
     return note;
 }
 
-//function to validate our data
 function validateNote(notes){
     if(!notes.title || typeof notes.title !== 'string'){
         return false;
@@ -71,12 +38,6 @@ function validateNote(notes){
     if(!notes.text || typeof notes.text !== 'string'){
         return false;
     }
-    // if(!note.diet || typeof note.diet !== 'string') {
-    //     return false;
-    // }
-    // if(!note.personalityTraits || !Array.isArray(note.personalityTraits)){
-    //     return false;
-    // }
     return true;
 }
 
