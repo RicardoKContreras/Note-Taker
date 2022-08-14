@@ -80,7 +80,7 @@ const saveNote = (note) =>
   })
   .then(postResponse => {
     console.log(postResponse);
-    alert('Thank you for adding a Note!');
+    alert('Thank you for adding a Note');
   });
 
 const deleteNote = (id) =>
