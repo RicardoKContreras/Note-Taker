@@ -1,6 +1,7 @@
 const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
+// const {notes} = require('./Develop/db/db.json');
  const htmlRoutes = require('./routes/htmlRoutes');
  const apiRoutes = require('./routes/apiRoutes');
 
@@ -18,6 +19,7 @@ app.use(express.static('public'));
  
 app.post('/api/notes', (req, res) => {
 
+    // req.body is where our incoming content will be
   console.log(req.body);
   res.json(req.body);
 }); 
