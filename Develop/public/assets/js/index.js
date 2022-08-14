@@ -27,35 +27,6 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
 
-// function createNewNote(body, note) {
-//   const notes = body;
-//   notes.push(note);
-//   fs.writeFileSync(
-//     path.join(__dirname, "../../../Develop/db/db"),
-//     JSON.stringify({ note}, null, 2)
-//   );
-//   return notes;
-// }
-
-// const printResults = resultArr => {
-//   console.log(resultArr);
-
-//   const animalHTML = resultArr.map(({ id, title, text }) => {
-//     return `
-//   <div class="col-12 col-md-5 mb-3">
-//     <div class="card p-3" data-id=${id}>
-//       <h4 class="text-primary">${title}</h4>
-//       <p>Species: ${title.substring(0, 1).toUpperCase()}<br/>
-//       Diet: ${text.substring(0, 1).toUpperCase() + title.substring(1)}<br/>
-//       Personality Traits: </p>
-//     </div>
-//   </div>
-//     `;
-//   });
-
-//   noteList.innerHTML = animalHTML.join('');
-// };
-
 const getNotes = () =>
   fetch('/api/notes', {
     method: 'GET',
